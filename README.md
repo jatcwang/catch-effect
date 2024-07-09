@@ -66,10 +66,21 @@ Context.local[IO]
 ## Catch
 `Catch` is responsible for throwing and catching errors.
 The MTL counterpart of `Catch` is `EitherT`.
-`Catch` can introduce new ad-hoc error channels that are independent of eachother.
-There are various ways to construct a catch, but the simplest (given that you're working in `cats-effect`) is the following.
+`Catch` can introduce new ad-hoc error channels that are independent of each other.
+
+There are various ways to construct a catch, simplest being using `IOCatch` (specialized to `cats.effect.IO)
 ```scala
-Catch.ioCatch: IO[Catch[IO]]
+IOCatch[DomainError] { handle =>
+  ...
+}
+```
+
+or if you're working with an abstract effect type:
+
+```
+Catch[F].use[DomainError] { handle =>
+  ...
+}
 ```
 
 ### Example in `IO`
